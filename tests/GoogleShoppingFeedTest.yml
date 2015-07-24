@@ -1,0 +1,62 @@
+Image:
+  iphone:
+    Title: "iphone"
+    FileName: "assets/iphone.jpg"
+  cable:
+    Title: "cable"
+    FileName: "assets/cable.jpg"
+  download:
+    Title: "download"
+    FileName: "assets/download.jpg"
+
+GoogleShoppingFeedTest_Shipping:
+  free:
+    Title: "Free Shipping"
+    Price: 0.00
+    Country: "*"
+  uk:
+    Title: "UK Shipping"
+    Price: 2.99
+    Country: GB
+  us:
+    Title: "US Shipping"
+    Price: 5.99
+    Country: US
+
+GoogleShoppingFeedTest_Product: 
+  iphone:
+    Title: "iPhone"
+    Price: 400.00
+    Weight: 1.0
+    StockID: "ip-123"
+    Brand: Apple
+    Description: "An apple iPhone"
+    Image: =>Image.iphone
+    Condition: "new"
+    Availability: "available"
+    MPN: "ap-ip123"
+    Shipping: =>GoogleShoppingFeedTest_Shipping.uk,=>GoogleShoppingFeedTest_Shipping.us
+  cable:
+    Title: "Charge Cable"
+    BasePrice: 3.99
+    Weight: 0.5
+    StockID: "cb-123"
+    Brand: Apple
+    Description: "A iPhone charge cable"
+    Image: =>Image.cable
+    Condition: "new"
+    Availability: "available"
+    MPN: "cc123"
+    Shipping: =>GoogleShoppingFeedTest_Shipping.uk,=>GoogleShoppingFeedTest_Shipping.us
+  download:
+    Title: "Downloadable Item"
+    BasePrice: 5.99
+    Weight: 0.0
+    StockID: "dn-123"
+    Brand: Apple
+    Description: "A iPhone charge cable"
+    Image: =>Image.download
+    Condition: "new"
+    Availability: "available"
+    MPN: "dwn123"
+    Shipping: =>GoogleShoppingFeedTest_Shipping.free,=>GoogleShoppingFeedTest_Shipping.us
