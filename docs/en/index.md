@@ -14,7 +14,7 @@ the following params:
 
 * StockID (unique ID for the product)
 * Title (name of the object)
-* Description (further details about the object)
+* Content (further details about the object)
 * AbsoluteLink (absolute URL for this product)
 * Image (an image file associated with this product)
 * Price (Price in a currency format)
@@ -26,7 +26,75 @@ the following params:
   * Country (2 character country code)
   * Service (Name of shipping)
   * Price
+  
+## Example Product
 
+If you have a simple product catalogue that you want to connect to the
+shopping feed, then you would need to use a DataObject (or SiteTree)
+extension. The following is a basic example of a Product object that
+contains all the required properties and associations. In order to
+handle shipping the Product object has a many_many association to a
+seperate shipping object.
+
+    class Product extends DataObject {
+
+        private static $db = array(
+            "Title" => "Varchar(255)",
+            "StockID" => "Varchar",
+            "Price" => "Currency",
+            "URLSegment" => "Varchar",
+            "Content" => "HTMLText",
+            "Condition" => "Varchar",
+            "Availability" => "Varchar",
+            "Brand" => "Varchar",
+            "MPN" => "Varchar",
+            "Weight" => "Decimal",
+            "PackSize" => "Int",
+            "Featured" => "Boolean"
+        );
+        
+        private static $has_one = array(
+            "Image" => "Image"
+        );
+        
+        private static $many_many = array(
+            "Shipping" => "Shipping"
+        );
+        
+        public function Link($action = null) {
+            return Controller::join_links(
+                Director::baseURL(),
+                $this->RelativeLink($action)
+            );
+        }
+
+        public function AbsoluteLink($action = null) {
+            if($this->hasMethod('alternateAbsoluteLink')) {
+                return $this->alternateAbsoluteLink($action);
+            } else {
+                return Director::absoluteURL($this->Link($action));
+            }
+        }
+        
+    }
+    
+    class Shipping extends DataObject {
+
+        private static $db = array(
+            "Title" => "Varchar(255)",
+            "Price" => "Currency",
+            "Location" => "Varchar(2)"
+        );
+        
+        private static $belongs_many_many = array(
+            "Products" => "Product"
+        );
+        
+    }
+    
+You will still need to enable the product DataObject using the config
+below.
+    
 ## Configuration
 
 Most module configuration is done via the SilverStripe Config API.
@@ -45,42 +113,8 @@ following outline:
 
 ### Including DataObjects
 
-The module provides support for including DataObject subclasses as pages in the 
-SiteTree such as comments, forum posts and other pages which are stored in your
-database as DataObject subclasses.
-
-To include a DataObject instance in the Sitemap it requires that your subclass 
-defines two functions:
-
- * AbsoluteLink() function which returns the URL for this DataObject
- * canView() function which returns a boolean value.
-
-The following is a barebones example of a DataObject called
-'MyDataObject'. It  assumes that you have a controller called
-'MyController' which has a show method to show the DataObject by its ID.
-
-	<?php
-	
-	class MyDataObject extends DataObject {
-		
-		function canView($member = null) {
-			return true;
-		}
-		
-		function AbsoluteLink() {
-			return Director::absoluteURL($this->Link());
-		}
-		
-		function Link() {
-			return 'MyController/show/'. $this->ID;
-		}
-	}
-
-
-After those methods have been defined on your DataObject you now need to
-tell this module that it should be listed in the sitemap.xml file. To do
-that, include the following in your _config.php file.
+After your DataObjects are setup and configured, you now need to tell
+this module that it should be listed in the .xml feed. To do that,
+include the following in your _config.php file.
 
 	GoogleShoppingFeed::register_dataobject('MyDataObject');
-    
-

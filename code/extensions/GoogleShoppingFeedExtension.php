@@ -6,10 +6,7 @@ class GoogleShoppingFeedExtension extends DataExtension {
 	 * @var array
 	 */
 	private static $db = array(
-        "Condition" => "Varchar",
-        "Availability" => "Varchar",
-        "Brand" => "Varchar",
-        "MPN" => "Varchar"
+        "RemoveFromShoppingFeed" => "Boolean"
 	);
     
     
@@ -19,14 +16,12 @@ class GoogleShoppingFeedExtension extends DataExtension {
 	public function updateSettingsFields(FieldList $fields) {
 		$tabset = $fields->findOrMakeTab('Root.Settings');
 		
-		$tabset->push(new Tab(
-            'GoogleShoppingFeed',
-            _t('GoogleShoppingFeed.GoogleShoppingFeed', 'Google Shopping Feed'),
-			new TextField("Condition"),
-			new TextField("Availability"),
-			new TextField("Brand"),
-			new TextField("MPN")
-		));
+		$tabset->push(new HeaderField(_t(
+            'GoogleShoppingFeed.GoogleShoppingFeed',
+            'Google Shopping Feed'
+        )));
+        
+        $tabset->push(new CheckboxField("RemoveFromShoppingFeed"));
 	}
     
     
@@ -37,14 +32,12 @@ class GoogleShoppingFeedExtension extends DataExtension {
         if(!method_exists($this->owner, "getSettingsFields")) {
             $tabset = $fields->findOrMakeTab('Root.Settings');
             
-            $tabset->push(new Tab(
+            $tabset->push(new HeaderField(_t(
                 'GoogleShoppingFeed.GoogleShoppingFeed',
-                _t('GoogleShoppingFeed.GoogleShoppingFeed', 'Google Shopping Feed'),
-                new TextField("Condition"),
-                new TextField("Availability"),
-                new TextField("Brand"),
-                new TextField("MPN")
-            ));
+                'Google Shopping Feed'
+            )));
+            
+            $tabset->push(new CheckboxField("RemoveFromShoppingFeed"));
         }
 	}
     
@@ -67,6 +60,10 @@ class GoogleShoppingFeedExtension extends DataExtension {
 		if($can) {
 			$can = $this->owner->canView();
 		}
+        
+        if($can && $this->owner->RemoveFromShoppingFeed) {
+            $can = false;
+        }
 
 		$this->owner->invokeWithExtensions('alterCanIncludeInGoogleShoppingFeed', $can);
 

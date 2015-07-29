@@ -17,5 +17,6 @@ This feed can be accessed via the URL http://yoursite.com/shoppingfeed.xml
 
 ## Usage Overview
 
-See docs/en for more information about configuring the module.
+See docs/en for more information about configuring the module and
+required parameters
 	
