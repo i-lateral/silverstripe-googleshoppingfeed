@@ -70,6 +70,18 @@ class GoogleShoppingFeedTest extends FunctionalTest {
 		$response = $this->get('shoppingfeed.xml');
 		$this->assertEquals(404, $response->getStatusCode(), 'Feed returns a 404 when disabled');
 	}
+    
+    public function testRemoveFromFeed() {
+		Config::inst()->update('GoogleShoppingFeed', 'enabled', true);
+		
+		$response = $this->get('shoppingfeed.xml');
+        $body = $response->getBody();
+
+        // Check that the feed does not contain a removed product
+        $expected = "<g:id>rm-123</g:id>";
+        $result = (substr_count($body, $expected)) ? true : false;
+		$this->assertFalse($result);
+	}
 }
 
 /**
@@ -87,7 +99,8 @@ class GoogleShoppingFeedTest_Product extends DataObject implements TestOnly {
         "Description"=> "Text",
         "Condition" => "Varchar",
         "Availability"=> "Varchar",
-        "MPN"       => "Varchar"
+        "MPN"       => "Varchar",
+        "RemoveFromShoppingFeed" => "Boolean"
 	);
     
     public static $has_one = array(

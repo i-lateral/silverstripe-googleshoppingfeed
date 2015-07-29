@@ -60,3 +60,16 @@ GoogleShoppingFeedTest_Product:
     Availability: "available"
     MPN: "dwn123"
     Shipping: =>GoogleShoppingFeedTest_Shipping.free,=>GoogleShoppingFeedTest_Shipping.us
+  removed:
+    Title: "Removed Product"
+    BasePrice: 20.9
+    Weight: 1.0
+    StockID: "rm-123"
+    Brand: Company
+    Description: "A product removed from the feed"
+    Image: =>Image.cable
+    Condition: "new"
+    Availability: "available"
+    MPN: "rm123"
+    RemoveFromShoppingFeed: 1
+    Shipping: =>GoogleShoppingFeedTest_Shipping.uk,=>GoogleShoppingFeedTest_Shipping.us
