@@ -38,7 +38,7 @@ class GoogleShoppingFeedController extends Controller {
             
             $currency = new Zend_Currency(i18n::get_locale());
             
-			$this->extend('updateGoogleSitemapItems', $items);
+			$this->extend('updateGoogleShoppingFeedItems', $items);
 
 			return array(
                 "SiteConfig" => SiteConfig::current_site_config(),
@@ -46,7 +46,7 @@ class GoogleShoppingFeedController extends Controller {
                 "Currency" => $currency->getShortName()
 			);
 		} else {
-			return new SS_HTTPResponse('Page not found', 404);
+			return new SS_HTTPResponse(_t("GoogleShoppingFeed.PageNotFound",'Page not found'), 404);
 		}
 	}
 }
