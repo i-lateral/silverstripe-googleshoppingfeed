@@ -12,7 +12,7 @@ be submitted to Google Shopping.
 You can add whatever objects you like to the feed, but they **MUST** provide
 the following params:
 
-* StockID (unique ID for the product)
+* StockID (unique ID for the product) or ID
 * Title (name of the object)
 * Content (further details about the object)
 * AbsoluteLink (absolute URL for this product)

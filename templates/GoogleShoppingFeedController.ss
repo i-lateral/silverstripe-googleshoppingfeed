@@ -8,7 +8,7 @@
         <% loop $Items %> 
 		<!-- First example shows what attributes are required and recommended for items that are not in the apparel category -->
 		<item>
-			<g:id>$StockID</g:id>
+			<g:id><% if $StockID %>$StockID<% else %>$ID<% end_if %></g:id>
 			<g:title>$Title</g:title>
 			<g:description>$Content.Summary</g:description>
 			<g:link>$AbsoluteLink</g:link>
