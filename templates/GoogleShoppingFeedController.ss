@@ -12,8 +12,8 @@
 			<g:title>$Title</g:title>
 			<g:description>$Content.Summary</g:description>
 			<g:link>$AbsoluteLink</g:link>
-			<% if $Images %><g:image_link>$Images.First.AbsoluteLink</g:image_link>
-			<% else %><g:image_link>$Image.AbsoluteLink</g:image_link><% end_if %>
+			<% if $Images %><g:image_link>{$BaseHref}{$Images.First.Filename}</g:image_link>
+			<% else %><g:image_link>{$BaseHref}{$Image.Filename}</g:image_link><% end_if %>
 			<g:price>$Price.RAW $Top.Currency</g:price>
             <g:condition>$Condition</g:condition>
 			<g:availability>$Availability</g:availability>
