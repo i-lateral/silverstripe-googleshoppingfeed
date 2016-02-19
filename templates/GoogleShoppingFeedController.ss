@@ -14,7 +14,7 @@
 			<g:link>$AbsoluteLink</g:link>
 			<% if $Images %><g:image_link>{$BaseHref}{$Images.First.Filename}</g:image_link>
 			<% else %><g:image_link>{$BaseHref}{$Image.Filename}</g:image_link><% end_if %>
-			<g:price>$Price.RAW $Top.Currency</g:price>
+			<g:price>$getPriceAndTax(2) $Top.Currency</g:price>
             <g:condition>$Condition</g:condition>
 			<g:availability>$Availability</g:availability>
 			<g:brand>$Brand</g:brand>
@@ -24,7 +24,7 @@
 			<g:shipping>
 				<g:country>$Country</g:country>
 				<g:service>$Title</g:service>
-				<g:price>$Total $Top.Currency</g:price>
+				<g:price>$Total(2) $Top.Currency</g:price>
 			</g:shipping>
             <% end_loop %>
 		</item>
