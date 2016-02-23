@@ -6,7 +6,6 @@
 		<description>$SiteConfig.Tagline</description>
 		
         <% loop $Items %> 
-		<!-- First example shows what attributes are required and recommended for items that are not in the apparel category -->
 		<item>
 			<g:id><% if $StockID %>$StockID<% else %>$ID<% end_if %></g:id>
 			<g:title>$Title</g:title>
