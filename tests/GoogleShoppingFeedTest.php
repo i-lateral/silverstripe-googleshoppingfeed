@@ -18,7 +18,7 @@ class GoogleShoppingFeedTest extends FunctionalTest
     public function setUp()
     {
         parent::setUp();
-        
+
         GoogleShoppingFeed::clear_registered_dataobjects();
     }
 
@@ -48,7 +48,7 @@ class GoogleShoppingFeedTest extends FunctionalTest
         // dataobject as it hasn't been registered
         $expected = "<g:id>ip-123</g:id>";
         $this->assertEquals(1, substr_count($body, $expected), 'Product with code ip-123 exists');
-        
+
         $expected = "<g:id>cb-123</g:id>";
         $this->assertEquals(1, substr_count($body, $expected), 'Product with code cb-123 exists');
 
@@ -59,12 +59,12 @@ class GoogleShoppingFeedTest extends FunctionalTest
     public function testAccess()
     {
         Config::inst()->update('GoogleShoppingFeed', 'enabled', true);
-        
+
         $response = $this->get('shoppingfeed.xml');
 
         $this->assertEquals(200, $response->getStatusCode(), 'Feed returns a 200 success when enabled');
         $this->assertEquals('application/xml; charset="utf-8"', $response->getHeader('Content-Type'));
-        
+
         GoogleShoppingFeed::register_dataobject("GoogleShoppingFeedTest_Product");
         $response = $this->get('shoppingfeed.xml');
         $this->assertEquals(200, $response->getStatusCode(), 'Feed returns a 200 success when enabled with products');
@@ -72,15 +72,15 @@ class GoogleShoppingFeedTest extends FunctionalTest
 
         Config::inst()->remove('GoogleShoppingFeed', 'enabled');
         Config::inst()->update('GoogleShoppingFeed', 'enabled', false);
-        
+
         $response = $this->get('shoppingfeed.xml');
         $this->assertEquals(404, $response->getStatusCode(), 'Feed returns a 404 when disabled');
     }
-    
+
     public function testRemoveFromFeed()
     {
         Config::inst()->update('GoogleShoppingFeed', 'enabled', true);
-        
+
         $response = $this->get('shoppingfeed.xml');
         $body = $response->getBody();
 
@@ -97,7 +97,7 @@ class GoogleShoppingFeedTest extends FunctionalTest
  */
 class GoogleShoppingFeedTest_Product extends DataObject implements TestOnly
 {
-    
+
     public static $db = array(
         "Title"     => "Varchar",
         "Price"     => "Currency",
@@ -110,11 +110,11 @@ class GoogleShoppingFeedTest_Product extends DataObject implements TestOnly
         "MPN"       => "Varchar",
         "RemoveFromShoppingFeed" => "Boolean"
     );
-    
+
     public static $has_one = array(
         "Image"     => "Image"
     );
-    
+
     public static $many_many = array(
         "Shipping" => "GoogleShoppingFeedTest_Shipping"
     );
@@ -142,7 +142,7 @@ class GoogleShoppingFeedTest_Shipping extends DataObject implements TestOnly
         'Price' => 'Currency',
         'Country' => 'Varchar(2)'
     );
-    
+
     public static $belongs_many_many = array(
         "Products" => "GoogleShoppingFeedTest_Product"
     );
