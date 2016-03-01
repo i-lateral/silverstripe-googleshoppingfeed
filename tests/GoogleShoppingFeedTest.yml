@@ -23,7 +23,7 @@ GoogleShoppingFeedTest_Shipping:
     Price: 5.99
     Country: US
 
-GoogleShoppingFeedTest_Product: 
+GoogleShoppingFeedTest_Product:
   iphone:
     Title: "iPhone"
     Price: 400.00

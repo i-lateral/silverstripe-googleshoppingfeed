@@ -1,21 +1,21 @@
 <?php
 /**
- * Shopping Feeds are a way to tell Google about pages on your site that they might 
- * not otherwise discover. In its simplest terms, a XML Sitemap usually called 
- * a Sitemap, with a capital S—is a list of the pages on your website. 
- * 
- * Creating and submitting a Sitemap helps make sure that Google knows about 
- * all the  pages on your site, including URLs that may not be discoverable by 
+ * Shopping Feeds are a way to tell Google about pages on your site that they might
+ * not otherwise discover. In its simplest terms, a XML Sitemap usually called
+ * a Sitemap, with a capital S—is a list of the pages on your website.
+ *
+ * Creating and submitting a Sitemap helps make sure that Google knows about
+ * all the  pages on your site, including URLs that may not be discoverable by
  * Google's normal crawling process.
- * 
+ *
  * The GoogleSitemap handle requests to 'sitemap.xml'
  * the other two classes are used to render the sitemap.
- * 
+ *
  * You can notify ("ping") Google about a changed sitemap
  * automatically whenever a new page is published or unpublished.
  * By default, Google is not notified, and will pick up your new
  * sitemap whenever the GoogleBot visits your website.
- * 
+ *
  * To Enable notification of Google after every publish set google_notification_enabled
  * to true in the googlesitemaps.yml config file.
  * This file is usually located in the _config folder of your project folder.
@@ -31,9 +31,9 @@
  * 		google_notification_enabled: true
  * 		use_show_in_search: true
  * </example>
- * 
+ *
  * @see http://www.google.com/support/webmasters/bin/answer.py?hl=en&answer=34609
- * 
+ *
  * @package googlesitemaps
  */
 class GoogleShoppingFeed
@@ -59,11 +59,11 @@ class GoogleShoppingFeed
     {
         if (!self::is_registered($className)) {
             $className::add_extension('GoogleShoppingFeedExtension');
-            
+
             self::$dataobjects[] = $className;
         }
     }
-    
+
     /**
      * Registers multiple dataobjects in a single line. See {@link register_dataobject}
      * for the heavy lifting
@@ -83,14 +83,14 @@ class GoogleShoppingFeed
      * Checks whether the given class name is already registered or not.
      *
      * @param string $className Name of DataObject to check
-     * 
+     *
      * @return bool
      */
     public static function is_registered($className)
     {
         return isset(self::$dataobjects[$className]);
     }
-    
+
     /**
      * Unregisters a class from the sitemap. Mostly used for the test suite
      *
@@ -110,7 +110,7 @@ class GoogleShoppingFeed
     {
         self::$dataobjects = array();
     }
-    
+
 
     /**
      * Constructs the list of data to include in the rendered feed. Links
@@ -129,7 +129,7 @@ class GoogleShoppingFeed
         $disabled_filter =  Config::inst()->get('GoogleShoppingFeed', 'use_disabled');
         $filter = array();
 
-        // todo migrate to extension hook or DI point for other modules to 
+        // todo migrate to extension hook or DI point for other modules to
         // modify state filters
         if (class_exists('Translatable')) {
             Translatable::disable_locale_filter();
@@ -142,7 +142,7 @@ class GoogleShoppingFeed
                 $instances = Versioned::get_by_stage('SiteTree', 'Live', $search_filter);
             } elseif ($class == "Product") {
                 $instances = $class::get();
-                
+
                 if ($disabled_filter) {
                     $instances->filter("Disabled", 0);
                 }
@@ -161,10 +161,10 @@ class GoogleShoppingFeed
 
         return $output;
     }
-    
+
     /**
      * Returns the string frequency of edits for a particular dataobject class.
-     * 
+     *
      * Frequency for {@link SiteTree} objects can be determined from the version
      * history.
      *

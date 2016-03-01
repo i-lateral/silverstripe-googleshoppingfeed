@@ -4,8 +4,8 @@
 		<title>$SiteConfig.Title</title>
 		<link>$BaseHref</link>
 		<description>$SiteConfig.Tagline</description>
-		
-        <% loop $Items %> 
+
+        <% loop $Items %>
 		<item>
 			<g:id><% if $StockID %>$StockID<% else %>$ID<% end_if %></g:id>
 			<g:title>$Title</g:title>
@@ -18,7 +18,7 @@
 			<g:availability>$Availability</g:availability>
 			<g:brand>$Brand</g:brand>
 			<g:mpn>$MPN</g:mpn>
-            
+
             <% loop $Shipping %>
 			<g:shipping>
 				<g:country>$Country</g:country>
@@ -28,6 +28,6 @@
             <% end_loop %>
 		</item>
         <% end_loop %>
-        
+
     </channel>
 </rss>
