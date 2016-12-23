@@ -18,14 +18,20 @@ the following params:
 * AbsoluteLink (absolute URL for this product)
 * Image (an image file associated with this product)
 * Price (Price in a currency format)
-* Condition (string)
-* Availability (string)
-* Brand (brand name string)
-* MPN (manufacturers product number)
 * Shipping - an SS_List of objects, including the following:
   * Country (2 character country code)
   * Service (Name of shipping)
   * Price
+
+## Provided Params
+In addition to the above, this module provides the following parameters
+automatically (along with fields under the "Google Shopping Feed" header
+in the CMS:
+
+* Condition (string)
+* Availability (string)
+* Brand (brand name string)
+* MPN (manufacturers product number)
   
 ## Example Product
 
@@ -44,10 +50,6 @@ seperate shipping object.
             "Price" => "Currency",
             "URLSegment" => "Varchar",
             "Content" => "HTMLText",
-            "Condition" => "Varchar",
-            "Availability" => "Varchar",
-            "Brand" => "Varchar",
-            "MPN" => "Varchar",
             "Weight" => "Decimal",
             "PackSize" => "Int",
             "Featured" => "Boolean"
