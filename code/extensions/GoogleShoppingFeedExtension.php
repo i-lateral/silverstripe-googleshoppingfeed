@@ -11,7 +11,8 @@ class GoogleShoppingFeedExtension extends DataExtension
         "Condition" => 'Enum(array("new","refurbished","used"),"new")',
         "Availability" => 'Enum(array("in stock","out of stock","pre-order"),"in stock")',
         "Brand" => "Varchar",
-        "MPN" =>  "Varchar(255)"
+        "MPN" =>  "Varchar(255)",
+        "GTIN" => "Varchar(255)"
     );
 
     /**
@@ -21,28 +22,30 @@ class GoogleShoppingFeedExtension extends DataExtension
      */
     public function addCMSFieldsToTabset($tabset)
     {
-        $tabset->push(new HeaderField(_t(
-            'GoogleShoppingFeed.GoogleShoppingFeed',
-            'Google Shopping Feed'
-        )));
         
-        $tabset->push(new CheckboxField("RemoveFromShoppingFeed"));
-
-        $tabset->push(new DropdownField(
-            "Condition",
-            null,
-            singleton($this->owner->ClassName)->dbObject('Condition')->enumValues()
+        $tabset->push(ToggleCompositeField::create(
+            "ShoppingFeedSettings",
+            _t(
+                'GoogleShoppingFeed.GoogleShoppingFeed',
+                'Google Shopping Feed'
+            ),
+            [
+                CheckboxField::create("RemoveFromShoppingFeed"),
+                DropdownField::create(
+                    "Condition",
+                    null,
+                    singleton($this->owner->ClassName)->dbObject('Condition')->enumValues()
+                ),
+                DropdownField::create(
+                    "Availability",
+                    null,
+                    singleton($this->owner->ClassName)->dbObject('Availability')->enumValues()
+                ),
+                TextField::create("Brand"),
+                TextField::create("MPN"),
+                TextField::create("GTIN")
+            ]
         ));
-
-        $tabset->push(new DropdownField(
-            "Availability",
-            null,
-            singleton($this->owner->ClassName)->dbObject('Availability')->enumValues()
-        ));
-
-        $tabset->push(new TextField("Brand"));
-
-        $tabset->push(new TextField("MPN"));
     }
 
     /**
@@ -112,7 +115,7 @@ class GoogleShoppingFeedExtension extends DataExtension
         }
         
         // If no price or title.
-        if (!$this->owner->Title || !$this->owner->Price || !$this->owner->Condition || !$this->owner->Availability || !$this->owner->Brand || !$this->owner->MPN) {
+        if (!$this->owner->Title || !$this->owner->Price || !$this->owner->Condition || !$this->owner->Availability || !$this->owner->Brand || !($this->owner->MPN || $this->owner->GTIN)) {
             $can = false;
         }
         

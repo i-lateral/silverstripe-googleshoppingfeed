@@ -11,14 +11,14 @@
 			<g:title>$Title</g:title>
 			<g:description>$Content.Summary</g:description>
 			<g:link>$AbsoluteLink</g:link>
-			<% if $Images %><g:image_link>{$BaseHref}{$Images.First.Filename}</g:image_link>
+			<% if $SortedImages %><g:image_link>{$BaseHref}{$SortedImages.First.Filename}</g:image_link>
 			<% else %><g:image_link>{$BaseHref}{$Image.Filename}</g:image_link><% end_if %>
-			<g:price>$getPriceAndTax(2) $Top.Currency</g:price>
+			<g:price>$PriceAndTax(2) $Top.Currency</g:price>
             <g:condition>$Condition</g:condition>
 			<g:availability>$Availability</g:availability>
 			<g:brand>$Brand</g:brand>
-			<g:mpn>$MPN</g:mpn>
-            
+			<% if $MPN %><g:mpn>$MPN</g:mpn><% end_if %>
+			<% if $GTIN %><g:gtin>$GTIN</g:gtin><% end_if %>
             <% loop $Shipping %>
 			<g:shipping>
 				<g:country>$Country</g:country>
