@@ -6,14 +6,89 @@ class GoogleShoppingFeedExtension extends DataExtension
     /**
      * @var array
      */
-    private static $db = array(
+    private static $db = [
         "RemoveFromShoppingFeed" => "Boolean",
         "Condition" => 'Enum(array("new","refurbished","used"),"new")',
         "Availability" => 'Enum(array("in stock","out of stock","pre-order"),"in stock")',
         "Brand" => "Varchar",
         "MPN" =>  "Varchar(255)",
         "GTIN" => "Varchar(255)"
-    );
+    ];
+
+    private static $has_one = [
+        "ShoppingPrimaryImage"    => "Image", 
+        "ShoppingAdditionalImage" => "Image", 
+    ];
+
+    /**
+     * Simple method to get the primary image for the feed.
+     * This method tried to assume som common image association
+     * name (if the default field is not used)
+     * 
+     * If no image is found, returns an empty image object.
+     *
+     * @return Image
+     */
+    public function getPrimaryImage()
+    {
+        if ($this->owner->ShoppingPrimaryImage()->exists()) {
+            return $this->owner->ShoppingPrimaryImage();
+        }
+        
+        if (method_exists($this->owner, "Image") && $this->owner->Image()->exists()) {
+            return $this->owner->Image();
+        }
+
+        if (method_exists($this->owner, "FeaturedImage") && $this->owner->FeaturedImage()->exists()) {
+            return $this->owner->FeaturedImage();
+        }
+        
+        if (method_exists($this->owner, "SummaryImage") && $this->owner->SummaryImage()->exists()) {
+            return $this->owner->SummaryImage();
+        }
+
+        if (method_exists($this->owner, "SortedImages") && $this->owner->SortedImages()->exists()) {
+            return $this->owner->SortedImages()->first();
+        }
+
+        if (method_exists($this->owner, "Images") && $this->owner->Images()->exists()) {
+            return $this->owner->Images()->first();
+        }
+
+        return Image::create();
+    }
+
+    /**
+     * Simple method to get the additional image for the feed.
+     * 
+     * If no image is found, returns an empty image object.
+     *
+     * @return Image
+     */
+    public function getAdditionalImage()
+    {
+        if ($this->owner->ShoppingAdditionalImage()->exists()) {
+            return $this->owner->ShoppingAdditionalImage();
+        }
+
+        if (method_exists($this->owner, "SortedImages") && $this->owner->SortedImages()->exists()) {
+            return $this
+                ->owner
+                ->SortedImages()
+                ->limit(1,1)
+                ->first();
+        }
+
+        if (method_exists($this->owner, "Images") && $this->owner->Images()->exists()) {
+            return $this
+                ->owner
+                ->Images()
+                ->limit(1,1)
+                ->first();
+        }
+        
+        return Image::create();
+    }
 
     /**
      * Single function to add all fields to a tabset
@@ -43,7 +118,11 @@ class GoogleShoppingFeedExtension extends DataExtension
                 ),
                 TextField::create("Brand"),
                 TextField::create("MPN"),
-                TextField::create("GTIN")
+                TextField::create("GTIN"),
+                UploadField::create("ShoppingPrimaryImage")
+                    ->setFolderName("google-shopping"),
+                UploadField::create("ShoppingAdditionalImage")
+                ->setFolderName("google-shopping")
             ]
         ));
     }
