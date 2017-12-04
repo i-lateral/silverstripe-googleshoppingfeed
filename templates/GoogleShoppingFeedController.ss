@@ -19,6 +19,7 @@
 			<g:brand>$Brand</g:brand>
 			<% if $MPN %><g:mpn>$MPN</g:mpn><% end_if %>
 			<% if $GTIN %><g:gtin>$GTIN</g:gtin><% end_if %>
+			<% if $GoogleProductCategory.exists %><g:google_product_category>$GoogleProductCategory.GoogleID</g:google_product_category><% end_if %>
             <% loop $Shipping %>
 			<g:shipping>
 				<g:country>$Country</g:country>

@@ -12,12 +12,13 @@ class GoogleShoppingFeedExtension extends DataExtension
         "Availability" => 'Enum(array("in stock","out of stock","pre-order"),"in stock")',
         "Brand" => "Varchar",
         "MPN" =>  "Varchar(255)",
-        "GTIN" => "Varchar(255)"
+        "GTIN" => "Varchar(255)",
     ];
 
     private static $has_one = [
-        "ShoppingPrimaryImage"    => "Image", 
-        "ShoppingAdditionalImage" => "Image", 
+        "ShoppingPrimaryImage"    => "Image",
+        "ShoppingAdditionalImage" => "Image",
+        "GoogleProductCategory" => "GoogleProductCategory"
     ];
 
     /**
@@ -91,13 +92,45 @@ class GoogleShoppingFeedExtension extends DataExtension
     }
 
     /**
+     * Get a list of google shopping categories which are formatted as:
+     * 
+     * Key: ID of category
+     * Value: Full name of category
+     *
+     * @return array
+     */
+    public function getGoogleCategories()
+    {
+        // Get a list of Google Categories from the 
+        // product file.
+        $file = BASE_PATH . "/googleshoppingfeed/thirdparty/google_product_taxonomy.txt";
+        $fopen = fopen($file, 'r');
+        $fread = fread($fopen, filesize($file));
+        fclose($fopen);
+        $result = ArrayList::create();
+
+        foreach (explode("\n", $fread) as $string) {
+            $exploded = explode(" - ", $string);
+            if ($string && count($exploded) == 2) {
+                $result->add(ArrayData::create([
+                    "ID" => $exploded[0],
+                    "Title" => $exploded[1]
+                ]));
+            }
+        }
+
+        return $result;
+    }
+
+    /**
      * Single function to add all fields to a tabset
      * 
      * @return null
      */
     public function addCMSFieldsToTabset($tabset)
-    {
+    { 
         
+
         $tabset->push(ToggleCompositeField::create(
             "ShoppingFeedSettings",
             _t(
@@ -119,6 +152,15 @@ class GoogleShoppingFeedExtension extends DataExtension
                 TextField::create("Brand"),
                 TextField::create("MPN"),
                 TextField::create("GTIN"),
+                AutoCompleteField::create(
+                    'GoogleProductCategoryID',
+                    $this->owner->fieldLabel("GoogleProductCategory"),
+                    '',
+                    null,
+                    null,
+                    'GoogleProductCategory',
+                    'Title'
+                ),
                 UploadField::create("ShoppingPrimaryImage")
                     ->setFolderName("google-shopping"),
                 UploadField::create("ShoppingAdditionalImage")
