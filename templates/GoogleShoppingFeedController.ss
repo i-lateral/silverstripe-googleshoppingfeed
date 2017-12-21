@@ -11,8 +11,8 @@
 			<g:title>$Title</g:title>
 			<g:description>$Content.Summary</g:description>
 			<g:link>$AbsoluteLink</g:link>
-			<% if $PrimaryImage.exists %><g:image_link>{$PrimaryImage.URL}</g:image_link><% end_if %>
-			<% if $AdditionalImage.exists %><g:additional_image_link>{$AdditionalImage.URL}</g:additional_image_link><% end_if %>
+			<% if $PrimaryImage.exists %><g:image_link>{$PrimaryImage.AbsoluteLink}</g:image_link><% end_if %>
+			<% if $AdditionalImage.exists %><g:additional_image_link>{$AdditionalImage.AbsoluteLink}</g:additional_image_link><% end_if %>
 			<g:price>$PriceAndTax(2) $Top.Currency</g:price>
             <g:condition>$Condition</g:condition>
 			<g:availability>$Availability</g:availability>
