@@ -1,5 +1,15 @@
 <?php
 
+namespace ilateral\SilverStripe\GoogleShoppingFeed\Tests;
+
+use SilverStripe\Assets\Image;
+use SilverStripe\Dev\TestOnly;
+use SilverStripe\ORM\DataObject;
+use SilverStripe\Control\Director;
+use SilverStripe\Core\Config\Config;
+use SilverStripe\Dev\FunctionalTest;
+use ilateral\SilverStripe\GoogleShoppingFeed\GoogleShoppingFeed;
+
 /**
  * @package googleshoppingfeed
  * @subpackage tests
@@ -7,7 +17,7 @@
 class GoogleShoppingFeedTest extends FunctionalTest
 {
 
-    public static $fixture_file = 'googleshoppingfeed/tests/GoogleShoppingFeedTest.yml';
+    public static $fixture_file = 'GoogleShoppingFeedTest.yml';
 
     protected $extraDataObjects = array(
         'GoogleShoppingFeedTest_Product',
@@ -88,72 +98,5 @@ class GoogleShoppingFeedTest extends FunctionalTest
         $expected = "<g:id>rm-123</g:id>";
         $result = (substr_count($body, $expected)) ? true : false;
         $this->assertFalse($result);
-    }
-}
-
-/**
- * @package googleshoppingfeed
- * @subpackage tests
- */
-class GoogleShoppingFeedTest_Product extends DataObject implements TestOnly
-{
-    
-    public static $db = array(
-        "Title"     => "Varchar",
-        "Price"     => "Currency",
-        "Weight"    => "Decimal",
-        "StockID"   => "Varchar",
-        "Brand"     => "Varchar",
-        "Description"=> "Text",
-        "Condition" => "Varchar",
-        "Availability"=> "Varchar",
-        "MPN"       => "Varchar",
-        "RemoveFromShoppingFeed" => "Boolean"
-    );
-    
-    public static $has_one = array(
-        "Image"     => "Image"
-    );
-    
-    public static $many_many = array(
-        "Shipping" => "GoogleShoppingFeedTest_Shipping"
-    );
-
-    public function canView($member = null)
-    {
-        return true;
-    }
-
-    public function AbsoluteLink()
-    {
-        return Director::absoluteBaseURL();
-    }
-}
-
-/**
- * @package googleshoppingfeed
- * @subpackage tests
- */
-class GoogleShoppingFeedTest_Shipping extends DataObject implements TestOnly
-{
-
-    public static $db = array(
-        'Title' => 'Varchar(10)',
-        'Price' => 'Currency',
-        'Country' => 'Varchar(2)'
-    );
-    
-    public static $belongs_many_many = array(
-        "Products" => "GoogleShoppingFeedTest_Product"
-    );
-
-    public function canView($member = null)
-    {
-        return true;
-    }
-
-    public function AbsoluteLink()
-    {
-        return Director::absoluteBaseURL();
     }
 }

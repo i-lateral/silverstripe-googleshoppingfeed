@@ -5,8 +5,11 @@ namespace ilateral\SilverStripe\GoogleShoppingFeed;
 use Product;
 use SilverStripe\ORM\DataList;
 use SilverStripe\ORM\ArrayList;
+use SilverStripe\Core\ClassInfo;
+use SilverStripe\ORM\DataObject;
 use SilverStripe\Core\Config\Config;
 use SilverStripe\Versioned\Versioned;
+use ilateral\SilverStripe\GoogleShoppingFeed\Extensions\Extension;
 
 /**
  * Shopping Feeds are a way to tell Google about pages on your site that they might 
@@ -137,9 +140,20 @@ class GoogleShoppingFeed
         $search_filter =  Config::inst()->get(__CLASS__, 'use_show_in_search');
         $disabled_filter =  Config::inst()->get(__CLASS__, 'use_disabled');
         $filter = array();
+        $classes = [];
 
+        $all_classes = ClassInfo::subclassesFor(DataObject::class);
+
+        unset($all_classes[strtolower(DataObject::class)]);
+
+        foreach($all_classes as $class){
+            if($class::has_extension(Extension::class)){
+                $classes[] = $class;
+            }
+        }
+        
         // todo migrate to extension hook or DI point for other modules to 
-        foreach (self::$dataobjects as $class) {
+        foreach ($classes as $class) {
             if ($class == SiteTree::class) {
                 $search_filter = ($search_filter) ? "\"ShowInSearch\" = 1" : "";
 
@@ -162,6 +176,8 @@ class GoogleShoppingFeed
                 }
             }
         }
+
+        $output->removeDuplicates();
 
         return $output;
     }
