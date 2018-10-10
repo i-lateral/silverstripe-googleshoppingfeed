@@ -1,5 +1,16 @@
 <?php
 
+namespace ilateral\SilverStripe\GoogleShoppingFeed\controllers;
+
+use Zend_Currency;
+use SilverStripe\i18n\i18n;
+use SilverStripe\Control\Controller;
+use SilverStripe\Core\Config\Config;
+use SilverStripe\Control\HTTPResponse;
+use SilverStripe\SiteConfig\SiteConfig;
+use ilateral\SilverStripe\GoogleShoppingFeed\GoogleShoppingFeed;
+
+
 require_once BASE_PATH . "/" . THIRDPARTY_DIR . "/Zend/Currency.php";
 
 /**

@@ -1,5 +1,21 @@
 <?php
 
+namespace ilateral\SilverStripe\GoogleShoppingFeed\extensions;
+
+use SilverStripe\Assets\Image;
+use SilverStripe\ORM\ArrayList;
+use SilverStripe\View\ArrayData;
+use SilverStripe\Forms\FieldList;
+use SilverStripe\Forms\TextField;
+use SilverStripe\Control\Director;
+use SilverStripe\ORM\DataExtension;
+use SilverStripe\Forms\CheckboxField;
+use SilverStripe\Forms\DropdownField;
+use SilverStripe\Forms\ToggleCompositeField;
+use SilverStripe\AssetAdmin\Forms\UploadField;
+use TractorCow\AutoComplete\AutoCompleteField;
+
+
 class GoogleShoppingFeedExtension extends DataExtension
 {
     

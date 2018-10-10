@@ -1,5 +1,11 @@
 <?php
 
+namespace ilateral\SilverStripe\GoogleShoppingFeed\model;
+
+use SilverStripe\ORM\DB;
+use SilverStripe\ORM\DataObject;
+
+
 class GoogleProductCategory extends DataObject
 {
     private static $db = [

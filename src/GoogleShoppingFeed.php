@@ -1,4 +1,12 @@
 <?php
+
+namespace ilateral\SilverStripe\GoogleShoppingFeed;
+
+use SilverStripe\ORM\DataList;
+use SilverStripe\ORM\ArrayList;
+use SilverStripe\Core\Config\Config;
+use SilverStripe\Versioned\Versioned;
+
 /**
  * Shopping Feeds are a way to tell Google about pages on your site that they might 
  * not otherwise discover. In its simplest terms, a XML Sitemap usually called 
@@ -130,11 +138,6 @@ class GoogleShoppingFeed
         $filter = array();
 
         // todo migrate to extension hook or DI point for other modules to 
-        // modify state filters
-        if (class_exists('Translatable')) {
-            Translatable::disable_locale_filter();
-        }
-
         foreach (self::$dataobjects as $class) {
             if ($class == "SiteTree") {
                 $search_filter = ($search_filter) ? "\"ShowInSearch\" = 1" : "";
