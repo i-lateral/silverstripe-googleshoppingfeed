@@ -1,0 +1,17 @@
+---
+Name: googleshoppingfeed
+---
+ilateral\SilverStripe\GoogleShoppingFeed\GoogleShoppingFeed:
+  enabled: true
+  google_notification_enabled: false
+  use_show_in_search: true
+  use_disabled: false
+---
+Only:
+  moduleexists: 'silvercommerce/catalogue-admin'
+After: '#catalogueconfig'
+---
+SilverCommerce\CatalogueAdmin\Model\CatalogueProduct:
+  extensions:
+    ilateral\SilverStripe\GoogleShoppingFeed\extensions\Extension
+  

@@ -16,7 +16,7 @@ use SilverStripe\AssetAdmin\Forms\UploadField;
 use TractorCow\AutoComplete\AutoCompleteField;
 
 
-class GoogleShoppingFeedExtension extends DataExtension
+class Extension extends DataExtension
 {
     
     /**
@@ -202,11 +202,13 @@ class GoogleShoppingFeedExtension extends DataExtension
      */
     public function updateSettingsFields(FieldList $fields)
     {
-        if($this->hasCMSSettingsFields()) {
+        var_dump("i'm here!");
+        exit;
+        if($this->owner->hasCMSSettingsFields()) {
             $tabset = $fields->findOrMakeTab('Root.Settings');
 
             if ($tabset) {
-                $this->addCMSFieldsToTabset($tabset);
+                $this->owner->addCMSFieldsToTabset($tabset);
             }
         }
     }
@@ -219,11 +221,13 @@ class GoogleShoppingFeedExtension extends DataExtension
      */
     public function updateCMSFields(FieldList $fields)
     {
-        if (!$this->hasCMSSettingsFields()) {
+        var_dump("i'm here!");
+        exit;
+        if (!$this->owner->hasCMSSettingsFields()) {
             $tabset = $fields->findOrMakeTab('Root.Settings');
 
             if ($tabset) {
-                $this->addCMSFieldsToTabset($tabset);
+                $this->owner->addCMSFieldsToTabset($tabset);
             }
         }
     }

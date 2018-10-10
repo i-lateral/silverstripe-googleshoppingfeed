@@ -2,16 +2,13 @@
 
 namespace ilateral\SilverStripe\GoogleShoppingFeed\controllers;
 
-use Zend_Currency;
+use NumberFormatter;
 use SilverStripe\i18n\i18n;
 use SilverStripe\Control\Controller;
 use SilverStripe\Core\Config\Config;
 use SilverStripe\Control\HTTPResponse;
 use SilverStripe\SiteConfig\SiteConfig;
 use ilateral\SilverStripe\GoogleShoppingFeed\GoogleShoppingFeed;
-
-
-require_once BASE_PATH . "/" . THIRDPARTY_DIR . "/Zend/Currency.php";
 
 /**
  * Controller for displaying the xml feed.
@@ -54,14 +51,14 @@ class GoogleShoppingFeedController extends Controller
 
             $items = GoogleShoppingFeed::get_items();
             
-            $currency = new Zend_Currency(i18n::get_locale());
+            $currency = new NumberFormatter(i18n::get_locale(), NumberFormatter::CURRENCY);
             
             $this->extend('updateGoogleShoppingFeedItems', $items);
 
             return array(
                 "SiteConfig" => SiteConfig::current_site_config(),
                 'Items' => $items,
-                "Currency" => $currency->getShortName()
+                "Currency" => $currency->getTextAttribute(NumberFormatter::CURRENCY_CODE)
             );
         } else {
             return new SS_HTTPResponse(_t("GoogleShoppingFeed.PageNotFound", 'Page not found'), 404);

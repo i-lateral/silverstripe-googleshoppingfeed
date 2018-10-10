@@ -8,6 +8,8 @@ use SilverStripe\ORM\DataObject;
 
 class GoogleProductCategory extends DataObject
 {
+    private static $table_name = "GoogleProductCetegory";
+    
     private static $db = [
         "GoogleID" => "Int",
         "Title" => "Varchar(255)"
