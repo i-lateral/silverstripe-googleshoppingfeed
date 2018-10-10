@@ -4,7 +4,7 @@
 	"type": "silverstripe-vendormodule",
 	"keywords": ["silverstripe", "google", "shopping", "PPC", "adwords"],
 	"homepage": "https://github.com/i-lateral/silverstripe-googleshoppingfeed",
-	"license": "BSD",
+    "license": "BSD-3-Clause",
 	"authors": [{
 		"name": "Morven Lewis-Everley",
 		"email": "morven@ilateral.co.uk"
