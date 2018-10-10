@@ -13,5 +13,5 @@ After: '#catalogueconfig'
 ---
 SilverCommerce\CatalogueAdmin\Model\CatalogueProduct:
   extensions:
-    ilateral\SilverStripe\GoogleShoppingFeed\extensions\Extension
+    - ilateral\SilverStripe\GoogleShoppingFeed\Extensions\Extension
   

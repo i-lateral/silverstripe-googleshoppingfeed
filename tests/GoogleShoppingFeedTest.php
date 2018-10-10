@@ -33,7 +33,7 @@ class GoogleShoppingFeedTest extends FunctionalTest
     {
         GoogleShoppingFeed::register_dataobject("GoogleShoppingFeedTest_Product", '');
 
-        $items = GoogleShoppingFeed::get_items('GoogleShoppingFeedTest_Product', 1);
+        $items = GoogleShoppingFeed::getItems('GoogleShoppingFeedTest_Product', 1);
         $this->assertEquals(3, $items->count());
     }
 

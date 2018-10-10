@@ -1,6 +1,6 @@
 <?php
 
-namespace ilateral\SilverStripe\GoogleShoppingFeed\extensions;
+namespace ilateral\SilverStripe\GoogleShoppingFeed\Extensions;
 
 use SilverStripe\Assets\Image;
 use SilverStripe\ORM\ArrayList;
@@ -14,6 +14,7 @@ use SilverStripe\Forms\DropdownField;
 use SilverStripe\Forms\ToggleCompositeField;
 use SilverStripe\AssetAdmin\Forms\UploadField;
 use TractorCow\AutoComplete\AutoCompleteField;
+use ilateral\SilverStripe\GoogleShoppingFeed\Model\GoogleProductCategory;
 
 
 class Extension extends DataExtension
@@ -32,9 +33,9 @@ class Extension extends DataExtension
     ];
 
     private static $has_one = [
-        "ShoppingPrimaryImage"    => "Image",
-        "ShoppingAdditionalImage" => "Image",
-        "GoogleProductCategory" => "GoogleProductCategory"
+        "ShoppingPrimaryImage"    => Image::class,
+        "ShoppingAdditionalImage" => Image::class,
+        "GoogleProductCategory" => GoogleProductCategory::class
     ];
 
     /**
@@ -172,9 +173,7 @@ class Extension extends DataExtension
                     'GoogleProductCategoryID',
                     $this->owner->fieldLabel("GoogleProductCategory"),
                     '',
-                    null,
-                    null,
-                    'GoogleProductCategory',
+                    GoogleProductCategory::class,
                     'Title'
                 ),
                 UploadField::create("ShoppingPrimaryImage")
@@ -202,8 +201,6 @@ class Extension extends DataExtension
      */
     public function updateSettingsFields(FieldList $fields)
     {
-        var_dump("i'm here!");
-        exit;
         if($this->owner->hasCMSSettingsFields()) {
             $tabset = $fields->findOrMakeTab('Root.Settings');
 
@@ -221,8 +218,6 @@ class Extension extends DataExtension
      */
     public function updateCMSFields(FieldList $fields)
     {
-        var_dump("i'm here!");
-        exit;
         if (!$this->owner->hasCMSSettingsFields()) {
             $tabset = $fields->findOrMakeTab('Root.Settings');
 

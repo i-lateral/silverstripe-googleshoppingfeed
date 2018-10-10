@@ -1,6 +1,6 @@
 <?php
 
-namespace ilateral\SilverStripe\GoogleShoppingFeed\controllers;
+namespace ilateral\SilverStripe\GoogleShoppingFeed\Control;
 
 use NumberFormatter;
 use SilverStripe\i18n\i18n;
@@ -49,7 +49,7 @@ class GoogleShoppingFeedController extends Controller
                 'noindex'
             );
 
-            $items = GoogleShoppingFeed::get_items();
+            $items = GoogleShoppingFeed::getItems();
             
             $currency = new NumberFormatter(i18n::get_locale(), NumberFormatter::CURRENCY);
             

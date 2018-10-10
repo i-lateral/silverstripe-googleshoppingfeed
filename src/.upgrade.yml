@@ -1,5 +1,5 @@
 mappings:
-  GoogleShoppingFeedExtension: ilateral\SilverStripe\GoogleShoppingFeed\extensions\Extension
-  GoogleProductCategory: ilateral\SilverStripe\GoogleShoppingFeed\model\GoogleProductCategory
+  GoogleShoppingFeedExtension: ilateral\SilverStripe\GoogleShoppingFeed\Extensions\Extension
+  GoogleProductCategory: ilateral\SilverStripe\GoogleShoppingFeed\Model\GoogleProductCategory
   GoogleShoppingFeed: ilateral\SilverStripe\GoogleShoppingFeed\GoogleShoppingFeed
-  GoogleShoppingFeedController: ilateral\SilverStripe\GoogleShoppingFeed\controllers\GoogleShoppingFeedController
+  GoogleShoppingFeedController: ilateral\SilverStripe\GoogleShoppingFeed\Control\GoogleShoppingFeedController

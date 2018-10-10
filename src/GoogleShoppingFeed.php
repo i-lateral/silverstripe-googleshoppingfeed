@@ -2,6 +2,7 @@
 
 namespace ilateral\SilverStripe\GoogleShoppingFeed;
 
+use Product;
 use SilverStripe\ORM\DataList;
 use SilverStripe\ORM\ArrayList;
 use SilverStripe\Core\Config\Config;
@@ -66,7 +67,7 @@ class GoogleShoppingFeed
     public static function register_dataobject($className)
     {
         if (!self::is_registered($className)) {
-            $className::add_extension('GoogleShoppingFeedExtension');
+            $className::add_extension(Extension::class);
             
             self::$dataobjects[] = $className;
         }
@@ -130,20 +131,20 @@ class GoogleShoppingFeed
      *
      * @return ArrayList
      */
-    public static function get_items()
+    public static function getItems()
     {
         $output = new ArrayList();
-        $search_filter =  Config::inst()->get('GoogleShoppingFeed', 'use_show_in_search');
-        $disabled_filter =  Config::inst()->get('GoogleShoppingFeed', 'use_disabled');
+        $search_filter =  Config::inst()->get(__CLASS__, 'use_show_in_search');
+        $disabled_filter =  Config::inst()->get(__CLASS__, 'use_disabled');
         $filter = array();
 
         // todo migrate to extension hook or DI point for other modules to 
         foreach (self::$dataobjects as $class) {
-            if ($class == "SiteTree") {
+            if ($class == SiteTree::class) {
                 $search_filter = ($search_filter) ? "\"ShowInSearch\" = 1" : "";
 
                 $instances = Versioned::get_by_stage('SiteTree', 'Live', $search_filter);
-            } elseif ($class == "Product") {
+            } elseif ($class == Product::class) {
                 $instances = $class::get();
                 
                 if ($disabled_filter) {
@@ -163,6 +164,20 @@ class GoogleShoppingFeed
         }
 
         return $output;
+    }
+
+    /**
+     * Static interface to instance level ->getItems() for backward compatibility.
+     *
+     * @param string
+     * @param int
+     *
+     * @return ArrayList
+     * @deprecated Please create an instance and call ->getSitemaps() instead.
+     */
+    public static function get_items()
+    {
+        return static::inst()->getItems();
     }
     
     /**
@@ -191,6 +206,6 @@ class GoogleShoppingFeed
      */
     public static function enabled()
     {
-        return (Config::inst()->get('GoogleShoppingFeed', 'enabled', Config::INHERITED));
+        return (Config::inst()->get(self::class, 'enabled'));
     }
 }

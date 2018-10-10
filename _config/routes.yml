@@ -1,6 +1,6 @@
 ---
 Name: googleshoppingfeedroutes
 ---
-Director:
+SilverStripe\Control\Director:
   rules:
-    'shoppingfeed.xml': 'GoogleShoppingFeedController'
+    'shoppingfeed.xml': 'ilateral\SilverStripe\GoogleShoppingFeed\Control\GoogleShoppingFeedController'
