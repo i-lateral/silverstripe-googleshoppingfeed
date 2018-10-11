@@ -12,3 +12,7 @@ Initial official release of module, including:
 ## 1.0.1
 
 * Fix issues with image URL's
+
+## 2.0.0
+
+* upgraded for silverstripe 4
