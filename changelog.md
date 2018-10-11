@@ -16,3 +16,7 @@ Initial official release of module, including:
 ## 2.0.0
 
 * upgraded for silverstripe 4
+
+## 2.0.1
+
+* fixed url of google category file

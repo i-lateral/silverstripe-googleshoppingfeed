@@ -56,7 +56,7 @@ class GoogleProductCategory extends DataObject
     {
         // Get a list of Google Categories from the 
         // product file.
-        $file = __DIR__ . "../../thirdparty/google_product_taxonomy.txt";
+        $file = __DIR__ . "/../../thirdparty/google_product_taxonomy.txt";
         $fopen = fopen($file, 'r');
         $fread = fread($fopen, filesize($file));
         fclose($fopen);
