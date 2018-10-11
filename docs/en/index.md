@@ -19,8 +19,8 @@ the following params:
 * Image (an image file associated with this product)
 * Price (Price in a currency format)
 * Shipping - an SS_List of objects, including the following:
-  * Country (2 character country code)
-  * Service (Name of shipping)
+  * Country (2 character country code) _optional_
+  * Service (Name of shipping) _optional_
   * Price
 
 ## Provided Params
@@ -112,11 +112,3 @@ following outline:
   		google_notification_enabled: false
   		use_show_in_search: true
   		use_disabled: false
-
-### Including DataObjects
-
-After your DataObjects are setup and configured, you now need to tell
-this module that it should be listed in the .xml feed. To do that,
-include the following in your _config.php file.
-
-	GoogleShoppingFeed::register_dataobject('MyDataObject');

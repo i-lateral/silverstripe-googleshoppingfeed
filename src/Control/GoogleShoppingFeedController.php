@@ -61,7 +61,7 @@ class GoogleShoppingFeedController extends Controller
                 "Currency" => $currency->getTextAttribute(NumberFormatter::CURRENCY_CODE)
             );
         } else {
-            return new SS_HTTPResponse(_t("GoogleShoppingFeed.PageNotFound", 'Page not found'), 404);
+            return new HTTPResponse(_t("GoogleShoppingFeed.PageNotFound", 'Page not found'), 404);
         }
     }
 }

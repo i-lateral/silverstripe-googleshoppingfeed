@@ -58,38 +58,6 @@ class GoogleShoppingFeed
      */
     private static $dataobjects = array();
 
-    /**
-     * Decorates the given DataObject with {@link GoogleShoppingFeedDescorator}
-     * and pushes the class name to the registered DataObjects.
-     * Note that all registered DataObjects need the method AbsoluteLink().
-     *
-     * @param string $className  name of DataObject to register
-     *
-     * @return void
-     */
-    public static function register_dataobject($className)
-    {
-        if (!self::is_registered($className)) {
-            $className::add_extension(Extension::class);
-            
-            self::$dataobjects[] = $className;
-        }
-    }
-    
-    /**
-     * Registers multiple dataobjects in a single line. See {@link register_dataobject}
-     * for the heavy lifting
-     *
-     * @param array $dataobjects array of class names of DataObject to register
-     *
-     * @return void
-     */
-    public static function register_dataobjects($dataobjects)
-    {
-        foreach ($dataobjects as $obj) {
-            self::register_dataobject($obj);
-        }
-    }
 
     /**
      * Checks whether the given class name is already registered or not.
@@ -101,16 +69,6 @@ class GoogleShoppingFeed
     public static function is_registered($className)
     {
         return isset(self::$dataobjects[$className]);
-    }
-    
-    /**
-     * Unregisters a class from the sitemap. Mostly used for the test suite
-     *
-     * @param string
-     */
-    public static function unregister_dataobject($className)
-    {
-        unset(self::$dataobjects[$className]);
     }
 
     /**

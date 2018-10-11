@@ -9,6 +9,8 @@ use SilverStripe\Control\Director;
 use SilverStripe\Core\Config\Config;
 use SilverStripe\Dev\FunctionalTest;
 use ilateral\SilverStripe\GoogleShoppingFeed\GoogleShoppingFeed;
+use ilateral\SilverStripe\GoogleShoppingFeed\Tests\Model\TestProduct;
+use ilateral\SilverStripe\GoogleShoppingFeed\Tests\Model\TestShipping;
 
 /**
  * @package googleshoppingfeed
@@ -19,11 +21,10 @@ class GoogleShoppingFeedTest extends FunctionalTest
 
     public static $fixture_file = 'GoogleShoppingFeedTest.yml';
 
-    protected $extraDataObjects = array(
-        'GoogleShoppingFeedTest_Product',
-        'GoogleShoppingFeedTest_Shipping',
-        "Image"
-    );
+    protected static $extra_dataobjects = [
+        TestProduct::class,
+        TestShipping::class
+    ];
 
     public function setUp()
     {
@@ -41,16 +42,12 @@ class GoogleShoppingFeedTest extends FunctionalTest
 
     public function testGetItems()
     {
-        GoogleShoppingFeed::register_dataobject("GoogleShoppingFeedTest_Product", '');
-
-        $items = GoogleShoppingFeed::getItems('GoogleShoppingFeedTest_Product', 1);
+        $items = GoogleShoppingFeed::getItems(TestProduct::class, 1);
         $this->assertEquals(3, $items->count());
     }
 
     public function testAccessingXMLFile()
     {
-        GoogleShoppingFeed::register_dataobject("GoogleShoppingFeedTest_Product");
-
         $response = $this->get('shoppingfeed.xml');
         $body = $response->getBody();
 
@@ -68,20 +65,19 @@ class GoogleShoppingFeedTest extends FunctionalTest
 
     public function testAccess()
     {
-        Config::inst()->update('GoogleShoppingFeed', 'enabled', true);
+        Config::inst()->update(GoogleShoppingFeed::class, 'enabled', true);
         
         $response = $this->get('shoppingfeed.xml');
 
         $this->assertEquals(200, $response->getStatusCode(), 'Feed returns a 200 success when enabled');
         $this->assertEquals('application/xml; charset="utf-8"', $response->getHeader('Content-Type'));
         
-        GoogleShoppingFeed::register_dataobject("GoogleShoppingFeedTest_Product");
         $response = $this->get('shoppingfeed.xml');
         $this->assertEquals(200, $response->getStatusCode(), 'Feed returns a 200 success when enabled with products');
         $this->assertEquals('application/xml; charset="utf-8"', $response->getHeader('Content-Type'));
 
-        Config::inst()->remove('GoogleShoppingFeed', 'enabled');
-        Config::inst()->update('GoogleShoppingFeed', 'enabled', false);
+        Config::inst()->remove(GoogleShoppingFeed::class, 'enabled');
+        Config::inst()->update(GoogleShoppingFeed::class, 'enabled', false);
         
         $response = $this->get('shoppingfeed.xml');
         $this->assertEquals(404, $response->getStatusCode(), 'Feed returns a 404 when disabled');
@@ -89,7 +85,7 @@ class GoogleShoppingFeedTest extends FunctionalTest
     
     public function testRemoveFromFeed()
     {
-        Config::inst()->update('GoogleShoppingFeed', 'enabled', true);
+        Config::inst()->update(GoogleShoppingFeed::class, 'enabled', true);
         
         $response = $this->get('shoppingfeed.xml');
         $body = $response->getBody();

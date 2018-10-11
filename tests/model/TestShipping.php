@@ -10,8 +10,9 @@ use SilverStripe\Control\Director;
  * @package googleshoppingfeed
  * @subpackage tests
  */
-class Test_Shipping extends DataObject implements TestOnly
+class TestShipping extends DataObject implements TestOnly
 {
+    private static $table_name = 'TestShipping';
 
     private static $db = array(
         'Title' => 'Varchar(10)',
@@ -20,7 +21,7 @@ class Test_Shipping extends DataObject implements TestOnly
     );
     
     private static $belongs_many_many = array(
-        "Products" => Test_Product::class
+        "Products" => TestProduct::class
     );
 
     public function canView($member = null)

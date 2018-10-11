@@ -1,4 +1,4 @@
-Image:
+SilverStripe\Assets\Image:
   iphone:
     Title: "iphone"
     FileName: "assets/iphone.jpg"
@@ -9,7 +9,7 @@ Image:
     Title: "download"
     FileName: "assets/download.jpg"
 
-GoogleShoppingFeedTest_Shipping:
+ilateral\SilverStripe\GoogleShoppingFeed\Tests\Model\TestShipping:
   free:
     Title: "Free Shipping"
     Price: 0.00
@@ -23,7 +23,7 @@ GoogleShoppingFeedTest_Shipping:
     Price: 5.99
     Country: US
 
-GoogleShoppingFeedTest_Product: 
+ilateral\SilverStripe\GoogleShoppingFeed\Tests\Model\TestProduct: 
   iphone:
     Title: "iPhone"
     Price: 400.00
@@ -31,11 +31,11 @@ GoogleShoppingFeedTest_Product:
     StockID: "ip-123"
     Brand: Apple
     Description: "An apple iPhone"
-    Image: =>Image.iphone
+    Image: =>SilverStripe\Assets\Image.iphone
     Condition: "new"
     Availability: "available"
     MPN: "ap-ip123"
-    Shipping: =>GoogleShoppingFeedTest_Shipping.uk,=>GoogleShoppingFeedTest_Shipping.us
+    Shipping: =>ilateral\SilverStripe\GoogleShoppingFeed\Tests\Model\TestShipping.uk,=>ilateral\SilverStripe\GoogleShoppingFeed\Tests\Model\TestShipping.us
   cable:
     Title: "Charge Cable"
     BasePrice: 3.99
@@ -43,11 +43,11 @@ GoogleShoppingFeedTest_Product:
     StockID: "cb-123"
     Brand: Apple
     Description: "A iPhone charge cable"
-    Image: =>Image.cable
+    Image: =>SilverStripe\Assets\Image.cable
     Condition: "new"
     Availability: "available"
     MPN: "cc123"
-    Shipping: =>GoogleShoppingFeedTest_Shipping.uk,=>GoogleShoppingFeedTest_Shipping.us
+    Shipping: =>ilateral\SilverStripe\GoogleShoppingFeed\Tests\Model\TestShipping.uk,=>ilateral\SilverStripe\GoogleShoppingFeed\Tests\Model\TestShipping.us
   download:
     Title: "Downloadable Item"
     BasePrice: 5.99
@@ -55,11 +55,11 @@ GoogleShoppingFeedTest_Product:
     StockID: "dn-123"
     Brand: Apple
     Description: "A iPhone charge cable"
-    Image: =>Image.download
+    Image: =>SilverStripe\Assets\Image.download
     Condition: "new"
     Availability: "available"
     MPN: "dwn123"
-    Shipping: =>GoogleShoppingFeedTest_Shipping.free,=>GoogleShoppingFeedTest_Shipping.us
+    Shipping: =>ilateral\SilverStripe\GoogleShoppingFeed\Tests\Model\TestShipping.uk,=>ilateral\SilverStripe\GoogleShoppingFeed\Tests\Model\TestShipping.us
   removed:
     Title: "Removed Product"
     BasePrice: 20.9
@@ -67,9 +67,9 @@ GoogleShoppingFeedTest_Product:
     StockID: "rm-123"
     Brand: Company
     Description: "A product removed from the feed"
-    Image: =>Image.cable
+    Image: =>SilverStripe\Assets\Image.cable
     Condition: "new"
     Availability: "available"
     MPN: "rm123"
     RemoveFromShoppingFeed: 1
-    Shipping: =>GoogleShoppingFeedTest_Shipping.uk,=>GoogleShoppingFeedTest_Shipping.us
+    Shipping: =>ilateral\SilverStripe\GoogleShoppingFeed\Tests\Model\TestShipping.uk,=>ilateral\SilverStripe\GoogleShoppingFeed\Tests\Model\TestShipping.us
