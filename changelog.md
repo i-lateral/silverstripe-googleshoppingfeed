@@ -20,3 +20,8 @@ Initial official release of module, including:
 ## 2.0.1
 
 * fixed url of google category file
+
+## 2.0.2
+
+* Only explicitly check for objects that implement The shopping feed extension
+* Better PSR-* support
