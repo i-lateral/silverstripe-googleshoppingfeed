@@ -2,13 +2,13 @@
 
 namespace ilateral\SilverStripe\GoogleShoppingFeed;
 
-use Product;
 use SilverStripe\ORM\DataList;
 use SilverStripe\ORM\ArrayList;
 use SilverStripe\Core\ClassInfo;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\Core\Config\Config;
 use SilverStripe\Versioned\Versioned;
+use SilverCommerce\CatalogueAdmin\Model\CatalogueProduct;
 use ilateral\SilverStripe\GoogleShoppingFeed\Extensions\Extension;
 
 /**
@@ -94,36 +94,34 @@ class GoogleShoppingFeed
      */
     public static function getItems()
     {
-        $output = new ArrayList();
-        $search_filter =  Config::inst()->get(__CLASS__, 'use_show_in_search');
-        $disabled_filter =  Config::inst()->get(__CLASS__, 'use_disabled');
-        $filter = array();
+        $output = ArrayList::create();
+        $search_filter = Config::inst()->get(__CLASS__, 'use_show_in_search');
+        $disabled_filter = Config::inst()->get(__CLASS__, 'use_disabled');
+        $filter = [];
         $classes = [];
-
         $all_classes = ClassInfo::subclassesFor(DataObject::class);
 
         unset($all_classes[strtolower(DataObject::class)]);
 
-        foreach($all_classes as $class){
-            if($class::has_extension(Extension::class)){
+        foreach ($all_classes as $class) {
+            if ($class::has_extension(Extension::class, null, true)) {
                 $classes[] = $class;
             }
         }
-        
+
         // todo migrate to extension hook or DI point for other modules to 
         foreach ($classes as $class) {
             if ($class == SiteTree::class) {
                 $search_filter = ($search_filter) ? "\"ShowInSearch\" = 1" : "";
-
                 $instances = Versioned::get_by_stage('SiteTree', 'Live', $search_filter);
-            } elseif ($class == Product::class) {
+            } elseif ($class == CatalogueProduct::class) {
                 $instances = $class::get();
-                
+
                 if ($disabled_filter) {
                     $instances->filter("Disabled", 0);
                 }
             } else {
-                $instances = new DataList($class);
+                $instances = DataList::create($class);
             }
 
             if ($instances) {
@@ -153,7 +151,7 @@ class GoogleShoppingFeed
     {
         return static::inst()->getItems();
     }
-    
+
     /**
      * Returns the string frequency of edits for a particular dataobject class.
      * 
