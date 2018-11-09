@@ -25,3 +25,7 @@ Initial official release of module, including:
 
 * Only explicitly check for objects that implement The shopping feed extension
 * Better PSR-* support
+
+## 2.0.3
+
+* Add RSS friendly fields to the feed (for feed readers)
