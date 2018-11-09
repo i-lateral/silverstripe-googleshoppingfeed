@@ -4,12 +4,15 @@
 		<title>$SiteConfig.Title</title>
 		<link>$BaseHref</link>
 		<description>$SiteConfig.Tagline</description>
-		
+
         <% loop $Items %> 
 		<item>
-			<g:id><% if $StockID %>$StockID<% else %>$ID<% end_if %></g:id>
+			<title>$Title</title>
 			<g:title>$Title</g:title>
+			<description>$Content.Summary</description>
 			<g:description>$Content.Summary</g:description>
+			<g:id><% if $StockID %>$StockID<% else %>$ID<% end_if %></g:id>
+			<link>$AbsoluteLink</link>
 			<g:link>$AbsoluteLink</g:link>
 			<% if $PrimaryImage.exists %><g:image_link>{$PrimaryImage.AbsoluteLink}</g:image_link><% end_if %>
 			<% if $AdditionalImage.exists %><g:additional_image_link>{$AdditionalImage.AbsoluteLink}</g:additional_image_link><% end_if %>
