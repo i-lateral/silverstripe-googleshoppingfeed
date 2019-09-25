@@ -218,6 +218,16 @@ class Extension extends DataExtension
      */
     public function updateCMSFields(FieldList $fields)
     {
+        $fields->removeByName("RemoveFromShoppingFeed");
+        $fields->removeByName("Condition");
+        $fields->removeByName("Availability");
+        $fields->removeByName("Brand");
+        $fields->removeByName("MPN");
+        $fields->removeByName("GTIN");
+        $fields->removeByName('GoogleProductCategoryID');
+        $fields->removeByName("ShoppingPrimaryImage");
+        $fields->removeByName("ShoppingAdditionalImage");
+        
         if (!$this->owner->hasCMSSettingsFields()) {
             $tabset = $fields->findOrMakeTab('Root.Settings');
 
