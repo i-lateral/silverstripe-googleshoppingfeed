@@ -29,3 +29,8 @@ Initial official release of module, including:
 ## 2.0.3
 
 * Add RSS friendly fields to the feed (for feed readers)
+
+## 2.1.0
+
+* Switch to custom param for google shopping price
+* Switch service name in template for shipping
