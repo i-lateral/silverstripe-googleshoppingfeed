@@ -260,8 +260,8 @@ class Extension extends DataExtension
             $can = false;
         }
         
-        // If no price or title.
-        if (!$this->owner->Title || !$this->owner->Price || !$this->owner->Condition || !$this->owner->Availability || !$this->owner->Brand || !($this->owner->MPN || $this->owner->GTIN)) {
+        // If no price, title or other requred fields
+        if (!$this->owner->Title || !$this->owner->ShoppingFeedPrice || !$this->owner->Condition || !$this->owner->Availability || !$this->owner->Brand || !($this->owner->MPN || $this->owner->GTIN)) {
             $can = false;
         }
         

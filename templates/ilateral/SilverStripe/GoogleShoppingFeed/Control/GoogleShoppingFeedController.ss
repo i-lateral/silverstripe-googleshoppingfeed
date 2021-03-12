@@ -16,7 +16,7 @@
 				<g:link>$AbsoluteLink</g:link>
 				<% if $PrimaryImage.exists %><g:image_link>{$PrimaryImage.AbsoluteLink}</g:image_link><% end_if %>
 				<% if $AdditionalImage.exists %><g:additional_image_link>{$AdditionalImage.AbsoluteLink}</g:additional_image_link><% end_if %>
-				<g:price>$PriceAndTax(2) $Top.Currency</g:price>
+				<g:price>$ShoppingFeedPrice $Top.Currency</g:price>
 				<g:condition>$Condition</g:condition>
 				<g:availability>$Availability</g:availability>
 				<g:brand>$Brand</g:brand>
@@ -26,8 +26,8 @@
 				<% loop $Shipping %>
 					<g:shipping>
 						<% if $Country %><g:country>$Country</g:country><% end_if %>
-						<% if $Title %><g:service>$Title</g:service><% end_if %>
-						<g:price>$Total(2) $Top.Currency</g:price>
+						<% if $Service %><g:service>$Service</g:service><% end_if %>
+						<g:price>$ShoppingFeedPrice $Top.Currency</g:price>
 					</g:shipping>
 				<% end_loop %>
 			</item>

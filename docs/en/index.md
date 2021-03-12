@@ -17,11 +17,11 @@ the following params:
 * Content (further details about the object)
 * AbsoluteLink (absolute URL for this product)
 * Image (an image file associated with this product)
-* Price (Price in a currency format)
+* ShoppingFeedPrice (Price in a currency format)
 * Shipping - an SS_List of objects, including the following:
   * Country (2 character country code) _optional_
   * Service (Name of shipping) _optional_
-  * Price
+  * ShoppingFeedPrice
 
 ## Provided Params
 In addition to the above, this module provides the following parameters
