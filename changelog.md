@@ -34,3 +34,7 @@ Initial official release of module, including:
 
 * Switch to custom param for google shopping price
 * Switch service name in template for shipping
+
+## 2.1.1
+
+* Add validation to shopping fields on save
