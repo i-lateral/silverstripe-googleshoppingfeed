@@ -2,6 +2,7 @@
 
 namespace ilateral\SilverStripe\GoogleShoppingFeed\Extensions;
 
+use LogicException;
 use SilverStripe\Assets\Image;
 use SilverStripe\ORM\ArrayList;
 use SilverStripe\View\ArrayData;
@@ -9,20 +10,18 @@ use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\TextField;
 use SilverStripe\Control\Director;
 use SilverStripe\ORM\DataExtension;
+use SilverStripe\Core\Config\Config;
 use SilverStripe\Forms\CheckboxField;
 use SilverStripe\Forms\DropdownField;
 use SilverStripe\Forms\ToggleCompositeField;
 use SilverStripe\AssetAdmin\Forms\UploadField;
 use TractorCow\AutoComplete\AutoCompleteField;
 use ilateral\SilverStripe\GoogleShoppingFeed\Model\GoogleProductCategory;
-
+use SilverStripe\Forms\ReadonlyField;
+use SilverStripe\ORM\ValidationResult;
 
 class Extension extends DataExtension
 {
-    
-    /**
-     * @var array
-     */
     private static $db = [
         "RemoveFromShoppingFeed" => "Boolean",
         "Condition" => 'Enum(array("new","refurbished","used"),"new")',
@@ -36,6 +35,14 @@ class Extension extends DataExtension
         "ShoppingPrimaryImage"    => Image::class,
         "ShoppingAdditionalImage" => Image::class,
         "GoogleProductCategory" => GoogleProductCategory::class
+    ];
+
+    private static $required_fields = [
+        'ShoppingFeedPrice',
+        'Title',
+        'Condition',
+        'Availability',
+        'Brand'
     ];
 
     /**
@@ -145,9 +152,7 @@ class Extension extends DataExtension
      * @return null
      */
     public function addCMSFieldsToTabset($tabset)
-    { 
-        
-
+    {
         $tabset->push(ToggleCompositeField::create(
             "ShoppingFeedSettings",
             _t(
@@ -156,6 +161,7 @@ class Extension extends DataExtension
             ),
             [
                 CheckboxField::create("RemoveFromShoppingFeed"),
+                ReadonlyField::create('ShoppingFeedPrice'),
                 DropdownField::create(
                     "Condition",
                     null,
@@ -236,8 +242,49 @@ class Extension extends DataExtension
             }
         }
     }
-    
-    
+
+    public function validate(ValidationResult $result)
+    {
+        $owner = $this->getOwner();
+        $required = Config::inst()->get(static::class, 'required_fields');
+        $valid = true;
+
+        if (((bool)$owner->RemoveFromShoppingFeed === true)) {
+            return;
+        }
+
+        // If any required field is invalid
+        foreach ($required as $field) {
+            if (empty($owner->{$field})) {
+                $valid = false;
+                $result->addFieldError(
+                    $field,
+                    $field . ' is required for shopping feed'
+                );
+            }
+        }
+
+        // Either MPN or GTIN are required
+        if (empty($owner->MPN) && empty($owner->GTIN)) {
+            $valid = false;
+            $result->addFieldError(
+                'MPN',
+                'MPN OR GTIN is required for shopping feed'
+            );
+            $result->addFieldError(
+                'GTIN',
+                'MPN OR GTIN is required for shopping feed'
+            );
+        }
+
+        if ($valid === false) {
+            $result->addMessage(
+                'Fields required for shopping feed are missing',
+                ValidationResult::TYPE_ERROR
+            );
+        }
+    }
+
     /**
      * Can we add this object to a shopping feed?
      * 
@@ -245,36 +292,53 @@ class Extension extends DataExtension
      */
     public function canIncludeInGoogleShoppingFeed()
     {
+        $owner = $this->getOwner();
+        $required = Config::inst()->get(static::class, 'required_fields');
         $can = true;
 
-        // If object does not link to the current website or absolute
-        // link not set.
-        if ($this->owner->hasMethod('AbsoluteLink')) {
+        try {
+            // Do we manually remove from object?
+            if ((bool)$owner->RemoveFromShoppingFeed === true) {
+                throw new LogicException("Item removed from feed");
+            }
+
+            // If object does not have an absolute link, it cannot
+            // be shown
+            if ($owner->hasMethod('AbsoluteLink') === false) {
+                throw new LogicException("No absolute link set");
+            }
+
+            // Ensure the object link is to this current site
             $hostHttp = parse_url(Director::protocolAndHost(), PHP_URL_HOST);
-            $objHttp = parse_url($this->owner->AbsoluteLink(), PHP_URL_HOST);
+            $objHttp = parse_url($owner->AbsoluteLink(), PHP_URL_HOST);
 
             if ($objHttp != $hostHttp) {
-                $can = false;
+                throw new LogicException("Invalid host");
             }
-        } else {
-            $can = false;
-        }
-        
-        // If no price, title or other requred fields
-        if (!$this->owner->Title || !$this->owner->ShoppingFeedPrice || !$this->owner->Condition || !$this->owner->Availability || !$this->owner->Brand || !($this->owner->MPN || $this->owner->GTIN)) {
-            $can = false;
-        }
-        
-        // Can any user view this item
-        if ($can) {
-            $can = $this->owner->canView();
-        }
-        
-        if ($can && $this->owner->RemoveFromShoppingFeed) {
-            $can = false;
-        }
 
-        $this->owner->invokeWithExtensions('alterCanIncludeInGoogleShoppingFeed', $can);
+            // If any required field is invalid
+            foreach ($required as $field) {
+                if (empty($owner->{$field})) {
+                    throw new LogicException("Object must implement {$field}");
+                }
+            }
+
+            if (empty($this->owner->MPN) && empty($this->owner->GTIN)) {
+                throw new LogicException("Object must have an MPN OR a GTIN");
+            }
+
+            // Can any user view this item
+            if ($can) {
+                $can = $owner->canView();
+            }
+
+            $owner->invokeWithExtensions('alterCanIncludeInGoogleShoppingFeed', $can);
+
+        } catch (LogicException $e) {
+            $can = false;
+            $owner->invokeWithExtensions('alterCanIncludeInGoogleShoppingFeed', $can);
+            return $can;
+        }
 
         return $can;
     }
