@@ -26,6 +26,7 @@ class Extension extends DataExtension
         "RemoveFromShoppingFeed" => "Boolean",
         "Condition" => 'Enum(array("new","refurbished","used"),"new")',
         "Availability" => 'Enum(array("in stock","out of stock","pre-order"),"in stock")',
+        "UPIExists" => 'Boolean',
         "Brand" => "Varchar",
         "MPN" =>  "Varchar(255)",
         "GTIN" => "Varchar(255)",
@@ -172,6 +173,13 @@ class Extension extends DataExtension
                     null,
                     singleton($this->owner->ClassName)->dbObject('Availability')->enumValues()
                 ),
+                CheckboxField::create(
+                    "UPIExists",
+                    _t(
+                        __CLASS__ . '.UPIExists',
+                        'Does this have a Unique Product Identifier (UPI)?'
+                    )
+                ),
                 TextField::create("Brand"),
                 TextField::create("MPN"),
                 TextField::create("GTIN"),
@@ -224,15 +232,18 @@ class Extension extends DataExtension
      */
     public function updateCMSFields(FieldList $fields)
     {
-        $fields->removeByName("RemoveFromShoppingFeed");
-        $fields->removeByName("Condition");
-        $fields->removeByName("Availability");
-        $fields->removeByName("Brand");
-        $fields->removeByName("MPN");
-        $fields->removeByName("GTIN");
-        $fields->removeByName('GoogleProductCategoryID');
-        $fields->removeByName("ShoppingPrimaryImage");
-        $fields->removeByName("ShoppingAdditionalImage");
+        $fields->removeByName([
+            'RemoveFromShoppingFeed',
+            'Condition',
+            'Availability',
+            'UPIExists',
+            'Brand',
+            'MPN',
+            'GTIN',
+            'GoogleProductCategoryID',
+            'ShoppingPrimaryImage',
+            'ShoppingAdditionalImage'
+        ]);
         
         if (!$this->owner->hasCMSSettingsFields()) {
             $tabset = $fields->findOrMakeTab('Root.Settings');
@@ -264,16 +275,36 @@ class Extension extends DataExtension
             }
         }
 
-        // Either MPN or GTIN are required
-        if (empty($owner->MPN) && empty($owner->GTIN)) {
+        // Brand is required if a UPI is available
+        if ($owner->UPIExists == true && empty($owner->Brand)) {
+            $valid = false;
+            $result->addFieldError(
+                'Brand',
+                _t(
+                    __CLASS__ . '.BrandRequired',
+                    'Brand is required if a unique product identifier is available'
+                )
+            );
+        }
+
+        // Either MPN or GTIN are required if a UPI is available
+        if ($owner->UPIExists == true
+            && empty($owner->MPN) && empty($owner->GTIN)
+        ) {
             $valid = false;
             $result->addFieldError(
                 'MPN',
-                'MPN OR GTIN is required for shopping feed'
+                _t(
+                    __CLASS__ . '.MPNGTINRequired',
+                    'MPN OR GTIN is required if a unique product identifier is available'
+                )
             );
             $result->addFieldError(
                 'GTIN',
-                'MPN OR GTIN is required for shopping feed'
+                _t(
+                    __CLASS__ . '.MPNGTINRequired',
+                    'MPN OR GTIN is required if a unique product identifier is available'
+                )
             );
         }
 

@@ -20,6 +20,7 @@
 				<g:condition>$Condition</g:condition>
 				<g:availability>$Availability</g:availability>
 				<g:brand>$Brand</g:brand>
+				<g:identifier_exists><% if $UPIExists %>yes<% else %>no<% end_if %></g:identifier_exists>
 				<% if $MPN %><g:mpn>$MPN</g:mpn><% end_if %>
 				<% if $GTIN %><g:gtin>$GTIN</g:gtin><% end_if %>
 				<% if $GoogleProductCategory.exists %><g:google_product_category>$GoogleProductCategory.GoogleID</g:google_product_category><% end_if %>

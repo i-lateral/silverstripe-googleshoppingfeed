@@ -38,3 +38,9 @@ Initial official release of module, including:
 ## 2.1.1
 
 * Add validation to shopping fields on save
+
+## 2.1.2
+
+* Add UPI exists field
+* Improve validation inline with UPI data
+* Add some translations
