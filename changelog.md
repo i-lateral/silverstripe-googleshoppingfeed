@@ -44,3 +44,7 @@ Initial official release of module, including:
 * Add UPI exists field
 * Improve validation inline with UPI data
 * Add some translations
+
+## 2.1.3
+
+* Remove Brand from required fields config

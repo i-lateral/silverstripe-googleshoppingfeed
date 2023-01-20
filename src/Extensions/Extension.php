@@ -42,8 +42,7 @@ class Extension extends DataExtension
         'ShoppingFeedPrice',
         'Title',
         'Condition',
-        'Availability',
-        'Brand'
+        'Availability'
     ];
 
     /**
