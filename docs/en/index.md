@@ -86,7 +86,41 @@ seperate shipping object.
         {
             return $this->Price;
         }
-        
+
+        /**
+        * If using SilverCommerce postage, you
+        * could generate a list of valid shipping
+        * with something like this
+        *
+        * @return \SilverStripe\ORM\ArrayList
+        */
+        public function getShipping()
+        {
+            $country = substr($this->getLocale(), 3, 2);
+            $region = Region::get()->filter('CountryCode', $country)->first();
+            $return = ArrayList::create();
+
+            $parcel = Parcel::create(
+                substr($this->getLocale(), 3, 2),
+                $region->Code
+            );
+
+            $parcel
+                ->setValue($this->PriceAndTax)
+                ->setWeight($this->Weight)
+                ->setItems(1);
+
+            /** @var \SilverCommerce\Postage\Helpers\PostageOption $postage */
+            foreach ($parcel->getPostageOptions() as $postage) {
+                $return->add(ArrayData::create([
+                    'Country' => $country,
+                    'Service' => $postage->getName(),
+                    'ShoppingFeedPrice' => round($postage->getTotalPrice(), 2)
+                ]));
+            }
+
+            return $return;   
+        }
     }
     
     class Shipping extends DataObject {
