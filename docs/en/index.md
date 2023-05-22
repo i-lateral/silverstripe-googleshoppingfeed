@@ -44,7 +44,7 @@ seperate shipping object.
 
     class Product extends DataObject {
 
-        private static $db = array(
+        private static $db = [
             "Title" => "Varchar(255)",
             "StockID" => "Varchar",
             "Price" => "Currency",
@@ -53,15 +53,19 @@ seperate shipping object.
             "Weight" => "Decimal",
             "PackSize" => "Int",
             "Featured" => "Boolean"
-        );
-        
-        private static $has_one = array(
+        ];
+
+        private static $has_one = [
             "Image" => "Image"
-        );
+        ];
         
-        private static $many_many = array(
+        private static $many_many = [
             "Shipping" => "Shipping"
-        );
+        ];
+
+        private static $casting = [
+            'ShoppingFeedPrice' = 'Decimal
+        ];
         
         public function Link($action = null) {
             return Controller::join_links(
@@ -77,6 +81,11 @@ seperate shipping object.
                 return Director::absoluteURL($this->Link($action));
             }
         }
+
+        public function getShoppingFeedPrice()
+        {
+            return $this->Price;
+        }
         
     }
     
@@ -91,6 +100,11 @@ seperate shipping object.
         private static $belongs_many_many = array(
             "Products" => "Product"
         );
+
+        public function getShoppingFeedPrice()
+        {
+            return $this->Price;
+        }
         
     }
     
