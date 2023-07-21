@@ -353,8 +353,10 @@ class Extension extends DataExtension
                 }
             }
 
-            if (empty($this->owner->MPN) && empty($this->owner->GTIN)) {
-                throw new LogicException("Object must have an MPN OR a GTIN");
+            if ($owner->UPIExists == true
+                && empty($owner->MPN) && empty($owner->GTIN)
+            ) {
+                throw new LogicException("Objects with a UPI must have an MPN OR a GTIN");
             }
 
             // Can any user view this item

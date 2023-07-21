@@ -48,3 +48,7 @@ Initial official release of module, including:
 ## 2.1.3
 
 * Remove Brand from required fields config
+
+# 2.1.4
+
+* Ensure UPI is respected by canIncludeInShoppingFeed
