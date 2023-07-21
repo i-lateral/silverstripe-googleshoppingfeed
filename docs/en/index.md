@@ -158,5 +158,4 @@ following outline:
 	GoogleShoppingFeed:
   		enabled: true
   		google_notification_enabled: false
-  		use_show_in_search: true
-  		use_disabled: false
+  		use_show_in_search: false

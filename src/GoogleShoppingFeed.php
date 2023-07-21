@@ -10,6 +10,7 @@ use SilverStripe\Core\Config\Config;
 use SilverStripe\Versioned\Versioned;
 use SilverCommerce\CatalogueAdmin\Model\CatalogueProduct;
 use ilateral\SilverStripe\GoogleShoppingFeed\Extensions\Extension;
+use SilverStripe\Core\Injector\Injector;
 
 /**
  * Shopping Feeds are a way to tell Google about pages on your site that they might 
@@ -96,8 +97,6 @@ class GoogleShoppingFeed
     {
         $output = ArrayList::create();
         $search_filter = Config::inst()->get(__CLASS__, 'use_show_in_search');
-        $disabled_filter = Config::inst()->get(__CLASS__, 'use_disabled');
-        $filter = [];
         $classes = [];
         $all_classes = ClassInfo::subclassesFor(DataObject::class);
 
@@ -111,24 +110,23 @@ class GoogleShoppingFeed
 
         // todo migrate to extension hook or DI point for other modules to 
         foreach ($classes as $class) {
-            if ($class == SiteTree::class) {
-                $search_filter = ($search_filter) ? "\"ShowInSearch\" = 1" : "";
-                $instances = Versioned::get_by_stage('SiteTree', 'Live', $search_filter);
-            } elseif ($class == CatalogueProduct::class) {
-                $instances = $class::get();
+            /** @var DataObject */
+            $singleton = Injector::inst()->get($class, true);
 
-                if ($disabled_filter) {
-                    $instances->filter("Disabled", 0);
-                }
+            if ($singleton->hasExtension(Versioned::class)) {
+                $search_filter = ($search_filter) ? "\"ShowInSearch\" = 1" : "";
+                $instances = Versioned::get_by_stage(
+                    $class,
+                    'Live',
+                    $search_filter
+                );
             } else {
                 $instances = DataList::create($class);
             }
 
-            if ($instances) {
-                foreach ($instances as $obj) {
-                    if ($obj->canIncludeInGoogleShoppingFeed()) {
-                        $output->push($obj);
-                    }
+            foreach ($instances as $obj) {
+                if ($obj->canIncludeInGoogleShoppingFeed()) {
+                    $output->push($obj);
                 }
             }
         }
