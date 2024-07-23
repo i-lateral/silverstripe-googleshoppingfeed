@@ -52,3 +52,7 @@ Initial official release of module, including:
 # 2.1.4
 
 * Ensure UPI is respected by canIncludeInShoppingFeed
+
+# 2.1.5
+
+* Add generic `updateExportFields` (mainly for SilverCommerce support)

@@ -206,6 +206,24 @@ class Extension extends DataExtension
     {
         return method_exists($this->owner, "getSettingsFields");
     }
+
+    public function updateExportFields(array &$fields)
+    {
+        $fields = array_merge(
+            $fields,
+            [
+                "RemoveFromShoppingFeed",
+                "Condition",
+                "Availability",
+                "UPIExists",
+                "Brand",
+                "MPN",
+                "GTIN"
+            ]
+        );
+
+        return $fields;
+    }
     
     /**
      * Add these fields to settings fields in the CMS (if it is used)
