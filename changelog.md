@@ -56,3 +56,7 @@ Initial official release of module, including:
 # 2.1.5
 
 * Add generic `updateExportFields` (mainly for SilverCommerce support)
+
+# 2.1.6
+
+* Fix how required fields are called in validation
