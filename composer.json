@@ -10,8 +10,8 @@
 		"email": "morven@ilateral.co.uk"
 	}],
 	"require": {
-		"silverstripe/framework": "^4.0",
-        "tractorcow/silverstripe-autocomplete": "^4.0"
+		"silverstripe/framework": "^4 || ^5",
+        "tractorcow/silverstripe-autocomplete": "^4 || ^5"
 	},
     "extra": {
         "expose": [

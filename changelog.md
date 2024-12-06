@@ -49,18 +49,23 @@ Initial official release of module, including:
 
 * Remove Brand from required fields config
 
-# 2.1.4
+## 2.1.4
 
 * Ensure UPI is respected by canIncludeInShoppingFeed
 
-# 2.1.5
+## 2.1.5
 
 * Add generic `updateExportFields` (mainly for SilverCommerce support)
 
-# 2.1.6
+## 2.1.6
 
 * Fix how required fields are called in validation
 
-# 2.1.7
+## 2.1.7
 
 * Fix performance issues and add some basic caching
+
+## 3.0.0
+
+* Code Cleanup
+* Port to SS5 and 4
