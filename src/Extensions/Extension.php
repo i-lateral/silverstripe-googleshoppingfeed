@@ -274,8 +274,10 @@ class Extension extends DataExtension
     public function validate(ValidationResult $result)
     {
         $owner = $this->getOwner();
-        $required = Config::inst()->get(static::class, 'required_fields');
         $valid = true;
+        $required = $owner
+            ->config()
+            ->get('required_fields');
 
         if (((bool)$owner->RemoveFromShoppingFeed === true)) {
             return;
