@@ -6,6 +6,7 @@ use SilverStripe\ORM\DataList;
 use SilverStripe\ORM\ArrayList;
 use SilverStripe\Core\ClassInfo;
 use SilverStripe\ORM\DataObject;
+use SilverStripe\CMS\Model\SiteTree;
 use SilverStripe\Core\Config\Config;
 use SilverStripe\Versioned\Versioned;
 use SilverCommerce\CatalogueAdmin\Model\CatalogueProduct;
@@ -58,6 +59,10 @@ class GoogleShoppingFeed
      */
     private static $dataobjects = array();
 
+    /**
+     * Cache any generated item lists for performances sake
+     */
+    private static $items_cache = [];
 
     /**
      * Checks whether the given class name is already registered or not.
@@ -97,20 +102,39 @@ class GoogleShoppingFeed
         $output = ArrayList::create();
         $search_filter = Config::inst()->get(__CLASS__, 'use_show_in_search');
         $disabled_filter = Config::inst()->get(__CLASS__, 'use_disabled');
-        $filter = [];
         $classes = [];
         $all_classes = ClassInfo::subclassesFor(DataObject::class);
 
         unset($all_classes[strtolower(DataObject::class)]);
 
+        // build a master list of classes to query
         foreach ($all_classes as $class) {
             if ($class::has_extension(Extension::class, null, true)) {
                 $classes[] = $class;
             }
         }
 
+        unset($class);
+        $redundant = [];
+
+        // ensure only top level class is used
+        foreach ($classes as $top_class) {
+            foreach ($classes as $class) {
+                if ($class !== $top_class && is_a($class, $top_class, true)) {
+                    $redundant[] = $class;
+                }
+            }
+        }
+
+        $classes = array_diff($classes, $redundant);
+
         // todo migrate to extension hook or DI point for other modules to 
         foreach ($classes as $class) {
+            if (isset(self::$items_cache[$class])) {
+                $output->merge(self::$items_cache[$class]);
+                continue;
+            }
+
             if ($class == SiteTree::class) {
                 $search_filter = ($search_filter) ? "\"ShowInSearch\" = 1" : "";
                 $instances = Versioned::get_by_stage('SiteTree', 'Live', $search_filter);
@@ -124,7 +148,9 @@ class GoogleShoppingFeed
                 $instances = DataList::create($class);
             }
 
-            if ($instances) {
+            if ($instances->exists()) {
+                self::$items_cache[$class] = $instances;
+
                 foreach ($instances as $obj) {
                     if ($obj->canIncludeInGoogleShoppingFeed()) {
                         $output->push($obj);

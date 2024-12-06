@@ -60,3 +60,7 @@ Initial official release of module, including:
 # 2.1.6
 
 * Fix how required fields are called in validation
+
+# 2.1.7
+
+* Fix performance issues and add some basic caching
